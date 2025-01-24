@@ -1,11 +1,16 @@
+import Footer from '@/components/footer'
+import Header from '@/components/shared/header'
+
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <div className="flex h-screen flex-col bg-blue-50">
-      <main className="flex-1 wrapper bg-green-50">{children}</main>
+    <div className='flex h-screen flex-col'>
+      <Header />
+      <main className='wrapper flex-1'>{children}</main>
+      <Footer />
     </div>
-  );
+  )
 }
