@@ -6,7 +6,7 @@ import { Product } from '@/types'
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <Card className='w-full max-w-sm'>
+    <Card className='relative w-full max-w-sm'>
       <CardHeader className='items-center p-0'>
         <Link href={`/product/${product.slug}`}>
           <Image
@@ -23,12 +23,20 @@ const ProductCard = ({ product }: { product: Product }) => {
         <Link href={`/product/${product.slug}`}>
           <h2 className='text-sm font-medium'>{product.name}</h2>
         </Link>
-        <div className='flex-between gap-4'>
-          <p>{product.rating} Stars</p>
+        <div className='h-4'></div>
+        <div className=''>
+          <div className='absolute bottom-2 left-4 flex gap-4'>
+            {product.rating} Stars
+          </div>
+
           {product.stock > 0 ? (
-            <ProductPrice value={Number(product.price)} />
+            <div className='absolute bottom-2 right-4 flex'>
+              <ProductPrice value={Number(product.price)} />
+            </div>
           ) : (
-            <p className='text-destructive'>Out Of Stock</p>
+            <div className='absolute bottom-2 right-2 flex'>
+              <p className='text-destructive'>Out of Stock</p>
+            </div>
           )}
         </div>
       </CardContent>
