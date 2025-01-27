@@ -1,17 +1,19 @@
+import { hashSync } from 'bcrypt-ts-edge'
+
 const sampleData = {
   users: [
     {
       name: 'John',
       email: 'admin@example.com',
-      password: '123456',
-      role: 'admin',
+      password: hashSync('123456', 10),
+      role: 'admin'
     },
     {
       name: 'Jane',
       email: 'user@example.com',
-      password: '123456',
-      role: 'user',
-    },
+      password: hashSync('123456', 10),
+      role: 'user'
+    }
   ],
   products: [
     {
@@ -21,7 +23,7 @@ const sampleData = {
       description: 'Classic Polo style with modern comfort',
       images: [
         '/images/sample-products/p1-1.jpg',
-        '/images/sample-products/p1-2.jpg',
+        '/images/sample-products/p1-2.jpg'
       ],
       price: 59.99,
       brand: 'Polo',
@@ -29,7 +31,7 @@ const sampleData = {
       numReviews: 10,
       stock: 5,
       isFeatured: true,
-      banner: '/images/banner-1.jpg',
+      banner: '/images/banner-1.jpg'
     },
     {
       name: 'Brooks Brothers Long Sleeved Shirt',
@@ -38,7 +40,7 @@ const sampleData = {
       description: 'Timeless style and premium comfort',
       images: [
         '/images/sample-products/p2-1.jpg',
-        '/images/sample-products/p2-2.jpg',
+        '/images/sample-products/p2-2.jpg'
       ],
       price: 85.9,
       brand: 'Brooks Brothers',
@@ -46,7 +48,7 @@ const sampleData = {
       numReviews: 8,
       stock: 10,
       isFeatured: true,
-      banner: '/images/banner-2.jpg',
+      banner: '/images/banner-2.jpg'
     },
     {
       name: 'Tommy Hilfiger Classic Fit Dress Shirt',
@@ -55,7 +57,7 @@ const sampleData = {
       description: 'A perfect blend of sophistication and comfort',
       images: [
         '/images/sample-products/p3-1.jpg',
-        '/images/sample-products/p3-2.jpg',
+        '/images/sample-products/p3-2.jpg'
       ],
       price: 99.95,
       brand: 'Tommy Hilfiger',
@@ -63,7 +65,7 @@ const sampleData = {
       numReviews: 3,
       stock: 0,
       isFeatured: false,
-      banner: null,
+      banner: null
     },
     {
       name: 'Calvin Klein Slim Fit Stretch Shirt',
@@ -72,7 +74,7 @@ const sampleData = {
       description: 'Streamlined design with flexible stretch fabric',
       images: [
         '/images/sample-products/p4-1.jpg',
-        '/images/sample-products/p4-2.jpg',
+        '/images/sample-products/p4-2.jpg'
       ],
       price: 39.95,
       brand: 'Calvin Klein',
@@ -80,7 +82,7 @@ const sampleData = {
       numReviews: 5,
       stock: 10,
       isFeatured: false,
-      banner: null,
+      banner: null
     },
     {
       name: 'Polo Ralph Lauren Oxford Shirt',
@@ -89,7 +91,7 @@ const sampleData = {
       description: 'Iconic Polo design with refined oxford fabric',
       images: [
         '/images/sample-products/p5-1.jpg',
-        '/images/sample-products/p5-2.jpg',
+        '/images/sample-products/p5-2.jpg'
       ],
       price: 79.99,
       brand: 'Polo',
@@ -97,7 +99,7 @@ const sampleData = {
       numReviews: 18,
       stock: 6,
       isFeatured: false,
-      banner: null,
+      banner: null
     },
     {
       name: 'Polo Classic Pink Hoodie',
@@ -106,7 +108,7 @@ const sampleData = {
       description: 'Soft, stylish, and perfect for laid-back days',
       images: [
         '/images/sample-products/p6-1.jpg',
-        '/images/sample-products/p6-2.jpg',
+        '/images/sample-products/p6-2.jpg'
       ],
       price: 99.99,
       brand: 'Polo',
@@ -114,9 +116,9 @@ const sampleData = {
       numReviews: 12,
       stock: 8,
       isFeatured: true,
-      banner: null,
-    },
-  ],
-};
+      banner: null
+    }
+  ]
+}
 
-export default sampleData;
+export default sampleData
