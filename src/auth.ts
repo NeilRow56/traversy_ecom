@@ -1,9 +1,9 @@
 import NextAuth from 'next-auth'
-
+import { authConfig } from './auth.config'
 import { prisma } from '@/db/prisma'
-import CredentialsProvider from 'next-auth/providers/credentials'
 import { compareSync } from 'bcrypt-ts-edge'
-import type { NextAuthConfig } from 'next-auth'
+
+import CredentialsProvider from 'next-auth/providers/credentials'
 
 export const config = {
   pages: {
@@ -11,10 +11,9 @@ export const config = {
     error: '/sign-in'
   },
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt' as const,
     maxAge: 30 * 24 * 60 * 60 // 30 days
   },
-
   providers: [
     CredentialsProvider({
       credentials: {
@@ -33,7 +32,7 @@ export const config = {
 
         // Check if user exists and if the password matches
         if (user && user.password) {
-          const isMatch = compareSync(
+          const isMatch = await compareSync(
             credentials.password as string,
             user.password
           )
@@ -54,9 +53,12 @@ export const config = {
     })
   ],
   callbacks: {
+    ...authConfig.callbacks,
     async session({ session, user, trigger, token }: any) {
       // Set the user ID from the token
       session.user.id = token.sub
+      session.user.role = token.role
+      session.user.name = token.name
 
       // If there is an update, set the user name
       if (trigger === 'update') {
@@ -64,8 +66,33 @@ export const config = {
       }
 
       return session
+    },
+    async jwt({ token, user, trigger, session }: any) {
+      // Assign user fields to token
+      if (user) {
+        token.id = user.id
+        token.role = user.role
+
+        // If user has no name then use the email
+        if (user.name === 'NO_NAME') {
+          token.name = user.email!.split('@')[0]
+
+          // Update database to reflect the token name
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { name: token.name }
+          })
+        }
+      }
+
+      // Handle session updates
+      if (session?.user.name && trigger === 'update') {
+        token.name = session.user.name
+      }
+
+      return token
     }
   }
-} satisfies NextAuthConfig
+}
 
 export const { handlers, auth, signIn, signOut } = NextAuth(config)
