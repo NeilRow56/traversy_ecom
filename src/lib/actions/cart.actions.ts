@@ -98,8 +98,8 @@ export async function addItemToCart(data: CartItem) {
       await prisma.cart.update({
         where: { id: cart.id },
         data: {
-          items: cart.items as Prisma.CartUpdateitemsInput[],
-          ...calcPrice(cart.items as CartItem[])
+          items: cart.items,
+          ...calcPrice(cart.items)
         }
       })
 
