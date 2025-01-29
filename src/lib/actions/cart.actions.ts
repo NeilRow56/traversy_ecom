@@ -6,7 +6,8 @@ import { convertToPlainObject, formatError, round2 } from '../utils'
 import { auth } from '@/auth'
 import { cookies } from 'next/headers'
 import { prisma } from '@/db/prisma'
-import { cartItemSchema } from '../validators'
+import { cartItemSchema, insertCartSchema } from '../validators'
+import { revalidatePath } from 'next/cache'
 
 // Calculate cart prices
 const calcPrice = (items: CartItem[]) => {
@@ -46,17 +47,31 @@ export async function addItemToCart(data: CartItem) {
       where: { id: item.productId }
     })
 
-    // TESTING
-    console.log({
-      'Session Cart ID': sessionCartId,
-      UserId: userId,
-      'Item Requested': item,
-      'Product Found': product
-    })
+    if (!product) throw new Error('Product not found')
 
-    return {
-      success: true,
-      message: 'Item added to cart'
+    if (!cart) {
+      // Create new cart object
+      const newCart = insertCartSchema.parse({
+        userId: userId,
+        items: [item],
+        sessionCartId: sessionCartId,
+        ...calcPrice([item])
+      })
+
+      // Add to database
+      await prisma.cart.create({
+        data: newCart
+      })
+
+      // Revalidate product page
+      revalidatePath(`/product/${product.slug}`)
+
+      return {
+        success: true,
+        message: 'Item added to cart'
+      }
+    } else {
+      // Check if item is already in cart
     }
   } catch (error) {
     return {

@@ -41,7 +41,7 @@ export function formatError(error: any) {
   }
 }
 
-// Round number to 2 decimal places
+// Round number to 2 decimal places EPSILON helps avoid rounding errors
 export function round2(value: number | string) {
   if (typeof value === 'number') {
     return Math.round((value + Number.EPSILON) * 100) / 100
