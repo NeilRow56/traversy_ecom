@@ -41,7 +41,7 @@ export function formatError(error: any) {
   }
 }
 
-// Round number to 2 decimal places EPSILON helps avoid rounding errors
+// Round number to 2 decimal places
 export function round2(value: number | string) {
   if (typeof value === 'number') {
     return Math.round((value + Number.EPSILON) * 100) / 100
@@ -67,4 +67,11 @@ export function formatCurrency(amount: number | string | null) {
   } else {
     return 'NaN'
   }
+}
+
+// Format Number
+const NUMBER_FORMATTER = new Intl.NumberFormat('en-US')
+
+export function formatNumber(number: number) {
+  return NUMBER_FORMATTER.format(number)
 }

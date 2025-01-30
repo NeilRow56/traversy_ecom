@@ -113,7 +113,9 @@ const CartTable = ({ cart }: CartProps) => {
                         )}
                       </Button>
                     </TableCell>
-                    <TableCell className='text-right'>£{item.price}</TableCell>
+                    <TableCell className='text-right'>
+                      {formatCurrency(item.price)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

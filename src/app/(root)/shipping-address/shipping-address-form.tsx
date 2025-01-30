@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, Loader } from 'lucide-react'
 
 import { shippingAddressDefaultValues } from '@/lib/constants'
+import { updateUserAddress } from '@/lib/actions/user.actions'
 
 const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
   const router = useRouter()
@@ -37,7 +38,17 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
     z.infer<typeof shippingAddressSchema>
   > = async values => {
     startTransition(async () => {
-      console.log(values)
+      const res = await updateUserAddress(values)
+
+      if (!res.success) {
+        toast({
+          variant: 'destructive',
+          description: res.message
+        })
+        return
+      }
+
+      router.push('/payment-method')
     })
   }
 
