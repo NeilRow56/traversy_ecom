@@ -10,11 +10,9 @@ export const metadata: Metadata = {
   title: 'Order Details'
 }
 
-const OrderDetailsPage = async (props: {
-  params: Promise<{
-    id: string
-  }>
-}) => {
+type ParamsType = Promise<{ id: string }>
+
+const OrderDetailsPage = async (props: { params: ParamsType }) => {
   const { id } = await props.params
 
   const order = await getOrderById(id)
@@ -22,11 +20,14 @@ const OrderDetailsPage = async (props: {
 
   const session = await auth()
 
-  let client_secret = null
-
   // Check if is not paid and using stripe
 
-  return <OrderDetailsTable />
+  return (
+    <>
+      <OrderDetailsTable />
+      <div>OrderId: {order.id}</div>
+    </>
+  )
 }
 
 export default OrderDetailsPage
