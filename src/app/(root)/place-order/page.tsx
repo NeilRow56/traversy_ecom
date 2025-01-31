@@ -19,6 +19,7 @@ import {
 import Image from 'next/image'
 import { formatCurrency } from '@/lib/utils'
 import PlaceOrderForm from './place-order-form'
+import { Separator } from '@radix-ui/react-dropdown-menu'
 
 export const metadata: Metadata = {
   title: 'Place Order'
@@ -54,7 +55,9 @@ const PlaceOrderPage = async () => {
               </p>
               <div className='mt-3'>
                 <Link href='/shipping-address'>
-                  <Button variant='outline'>Edit</Button>
+                  <Button variant='outline' className='font-bold text-primary'>
+                    Edit
+                  </Button>
                 </Link>
               </div>
             </CardContent>
@@ -66,7 +69,9 @@ const PlaceOrderPage = async () => {
               <p>{user.paymentMethod}</p>
               <div className='mt-3'>
                 <Link href='/payment-method'>
-                  <Button variant='outline'>Edit</Button>
+                  <Button variant='outline' className='font-bold text-primary'>
+                    Edit
+                  </Button>
                 </Link>
               </div>
             </CardContent>
@@ -128,6 +133,7 @@ const PlaceOrderPage = async () => {
                 <div>Shipping</div>
                 <div>{formatCurrency(cart.shippingPrice)}</div>
               </div>
+              <div className='w-full items-center border' />
               <div className='flex justify-between'>
                 <div>Total</div>
                 <div>{formatCurrency(cart.totalPrice)}</div>
