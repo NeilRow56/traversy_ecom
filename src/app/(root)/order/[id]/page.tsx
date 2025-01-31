@@ -23,14 +23,12 @@ const OrderDetailsPage = async (props: { params: ParamsType }) => {
   // Check if is not paid and using stripe
 
   return (
-    <>
-      <OrderDetailsTable
-        order={{
-          ...order,
-          shippingAddress: order.shippingAddress as ShippingAddress
-        }}
-      />
-    </>
+    <OrderDetailsTable
+      order={{
+        ...order,
+        shippingAddress: order.shippingAddress as ShippingAddress
+      }}
+    />
   )
 }
 
