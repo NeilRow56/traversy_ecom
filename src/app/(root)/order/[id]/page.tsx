@@ -24,8 +24,12 @@ const OrderDetailsPage = async (props: { params: ParamsType }) => {
 
   return (
     <>
-      <OrderDetailsTable />
-      <div>OrderId: {order.id}</div>
+      <OrderDetailsTable
+        order={{
+          ...order,
+          shippingAddress: order.shippingAddress as ShippingAddress
+        }}
+      />
     </>
   )
 }
