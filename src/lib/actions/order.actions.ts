@@ -6,10 +6,12 @@ import { getMyCart } from './cart.actions'
 import { getUserById } from './user.actions'
 import { insertOrderSchema } from '../validators'
 import { prisma } from '@/db/prisma'
-import { CartItem, PaymentResult } from '@/types'
-import { isRedirectError } from 'next/dist/client/components/redirect-error'
+import { CartItem, PaymentResult, ShippingAddress } from '@/types'
 import { paypal } from '../paypal'
 import { revalidatePath } from 'next/cache'
+
+import { Prisma } from '@prisma/client'
+import { isRedirectError } from 'next/dist/client/components/redirect-error'
 
 // Create order and create the order items
 export async function createOrder() {
@@ -106,7 +108,6 @@ export async function getOrderById(orderId: string) {
     where: {
       id: orderId
     },
-    // add other prisma schema models and select the fields we want, if not all of the data
     include: {
       orderitems: true,
       user: { select: { name: true, email: true } }
