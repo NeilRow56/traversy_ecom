@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getAllProducts } from '@/lib/actions/product.actions'
+import { deleteProduct, getAllProducts } from '@/lib/actions/product.actions'
 import { formatCurrency, formatId } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -80,7 +80,7 @@ const AdminProductsPage = async (props: {
                 <Button asChild variant='outline' size='sm'>
                   <Link href={`/admin/products/${product.id}`}>Edit</Link>
                 </Button>
-                DELETE DIALOG
+                <DeleteDialog id={product.id} action={deleteProduct} />
               </TableCell>
             </TableRow>
           ))}
