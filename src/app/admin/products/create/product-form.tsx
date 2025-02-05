@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { ControllerRenderProps, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
-
+import { UploadButton, UploadDropzone } from '@/lib/uploadthing'
 import slugify from 'slugify'
 
 import { createProduct, updateProduct } from '@/lib/actions/product.actions'
@@ -23,6 +23,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import Image from 'next/image'
+import { Card, CardContent } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 
 const ProductForm = ({
   type,
@@ -86,6 +89,10 @@ const ProductForm = ({
       }
     }
   }
+
+  const images = form.watch('images')
+  const isFeatured = form.watch('isFeatured')
+  const banner = form.watch('banner')
 
   return (
     <Form {...form}>
@@ -242,10 +249,94 @@ const ProductForm = ({
         </div>
         <div className='upload-field flex flex-col gap-5 md:flex-row'>
           {/* Images */}
+          <FormField
+            control={form.control}
+            name='images'
+            render={() => (
+              <FormItem className='w-full'>
+                <FormLabel>Images</FormLabel>
+                <Card>
+                  <CardContent className='mt-2 min-h-48 space-y-2'>
+                    <div className='flex-start space-x-2'>
+                      {images.map((image: string) => (
+                        <Image
+                          key={image}
+                          src={image}
+                          alt='product image'
+                          className='h-20 w-20 rounded-sm object-cover object-center'
+                          width={100}
+                          height={100}
+                        />
+                      ))}
+                      <FormControl>
+                        <UploadDropzone
+                          className='p-2 text-primary/70'
+                          endpoint='imageUploader'
+                          onClientUploadComplete={(res: { url: string }[]) => {
+                            form.setValue('images', [...images, res[0].url])
+                          }}
+                          onUploadError={(error: Error) => {
+                            toast({
+                              variant: 'destructive',
+                              description: `ERROR! ${error.message}`
+                            })
+                          }}
+                        />
+                      </FormControl>
+                    </div>
+                  </CardContent>
+                </Card>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         <div className='upload-field'>
           {/* isFeatured */}
           Featured Product
+          <Card>
+            <CardContent className='mt-2 space-y-2'>
+              <FormField
+                control={form.control}
+                name='isFeatured'
+                render={({ field }) => (
+                  <FormItem className='items-center space-x-2'>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel>Is Featured?</FormLabel>
+                  </FormItem>
+                )}
+              />
+              {isFeatured && banner && (
+                <Image
+                  src={banner}
+                  alt='banner image'
+                  className='w-full rounded-sm object-cover object-center'
+                  width={1920}
+                  height={680}
+                />
+              )}
+
+              {isFeatured && !banner && (
+                <UploadButton
+                  endpoint='imageUploader'
+                  onClientUploadComplete={(res: { url: string }[]) => {
+                    form.setValue('banner', res[0].url)
+                  }}
+                  onUploadError={(error: Error) => {
+                    toast({
+                      variant: 'destructive',
+                      description: `ERROR! ${error.message}`
+                    })
+                  }}
+                />
+              )}
+            </CardContent>
+          </Card>
         </div>
         <div>
           {/* Description */}
