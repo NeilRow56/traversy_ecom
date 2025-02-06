@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { deleteProduct, getAllProducts } from '@/lib/actions/product.actions'
+import { getAllProducts, deleteProduct } from '@/lib/actions/product.actions'
 import { formatCurrency, formatId } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -38,10 +38,10 @@ const AdminProductsPage = async (props: {
         <div className='flex items-center gap-3'>
           <h1 className='h2-bold'>Products</h1>
           {searchText && (
-            <div>
+            <div className='text-red-400'>
               Filtered by <i>&quot;{searchText}&quot;</i>{' '}
               <Link href='/admin/products'>
-                <Button variant='outline' size='sm'>
+                <Button variant='outline' size='sm' className='text-gray-600'>
                   Remove Filter
                 </Button>
               </Link>

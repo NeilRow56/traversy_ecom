@@ -345,22 +345,22 @@ export async function getAllOrders({
   page: number
   query: string
 }) {
-  // const queryFilter: Prisma.OrderWhereInput =
-  //   query && query !== 'all'
-  //     ? {
-  //         user: {
-  //           name: {
-  //             contains: query,
-  //             mode: 'insensitive'
-  //           } as Prisma.StringFilter
-  //         }
-  //       }
-  //     : {}
+  const queryFilter: Prisma.OrderWhereInput =
+    query && query !== 'all'
+      ? {
+          user: {
+            name: {
+              contains: query,
+              mode: 'insensitive'
+            } as Prisma.StringFilter
+          }
+        }
+      : {}
 
   const data = await prisma.order.findMany({
-    // where: {
-    //   ...queryFilter
-    // },
+    where: {
+      ...queryFilter
+    },
     orderBy: { createdAt: 'desc' },
     take: limit,
     skip: (page - 1) * limit,
