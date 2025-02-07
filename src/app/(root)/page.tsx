@@ -4,6 +4,7 @@ import {
   getFeaturedProducts,
   getLatestProducts
 } from '@/lib/actions/product.actions'
+import ViewAllProductsButton from '@/lib/view-all-products-button'
 
 const Homepage = async () => {
   const latestProducts = await getLatestProducts()
@@ -14,6 +15,7 @@ const Homepage = async () => {
         <ProductCarousel data={featuredProducts} />
       )}
       <ProductList data={latestProducts} title='Newest Arrivals' />
+      <ViewAllProductsButton />
     </>
   )
 }
